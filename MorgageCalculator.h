@@ -36,8 +36,11 @@ private:
     void processRate();
     void processMorgage();
 
+    bool log_base(double base,double x, double &res);
 
     Ui::MorgageCalculator *ui;
+
+    bool changing;
 
 };
 

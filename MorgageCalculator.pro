@@ -13,8 +13,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        MorgageCalculator.cpp
+        MorgageCalculator.cpp \
+    MainDialog.cpp
 
-HEADERS  += MorgageCalculator.h
+HEADERS  += MorgageCalculator.h \
+    MainDialog.h
 
-FORMS    += MorgageCalculator.ui
+FORMS    += MorgageCalculator.ui \
+    MainDialog.ui

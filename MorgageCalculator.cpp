@@ -2,6 +2,7 @@
 #include "ui_MorgageCalculator.h"
 #include <QButtonGroup>
 
+#include <QLayout>
 
 ///////////////////////////////////////////////////////////////////////////////
 ///
@@ -10,7 +11,11 @@ MorgageCalculator::MorgageCalculator(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MorgageCalculator)
 {
-    ui->setupUi(this);
+    ui->setupUi(this);    
+    //this->setLayout(ui->horizontalLayout);
+    //this->setLayout(
+
+    changing =false;
 
     QButtonGroup *aGroup = new QButtonGroup(this);
     aGroup->addButton(ui->durationRadio);
@@ -85,6 +90,9 @@ bool MorgageCalculator::validate(const QString &text1, double &val1)
 //////////////////////////////////////////////////////////////////////////////
 void MorgageCalculator::updateResults()
 {
+    if (changing) return;
+
+    changing=true;
     if (ui->durationRadio->isChecked())
         processDuration();
     else if (ui->rateRadio->isChecked())
@@ -93,6 +101,8 @@ void MorgageCalculator::updateResults()
         processPayment();
     else
         processMorgage();
+
+    changing = false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -104,6 +114,30 @@ void MorgageCalculator::processDuration()
     if (!validate(ui->amountEdt->text(),morgageAmount)) return;
     else if (!validate(ui->rateEdt->text(),annualRate)) return;
     else if (!validate(ui->paymentEdt->text(),payment)) return;
+    morgageAmount *= 1000;
+
+    if (ui->weeklyRadio->isChecked())
+    {
+        monthlyPayment = payment*52/12;
+    }
+    else if (ui->biweeklyRadio->isChecked())
+    {
+         monthlyPayment = payment*26/12;
+    }
+    else
+        monthlyPayment = payment;
+
+    double numPeriod;
+    double monthRate = annualRate/1200;
+    double dividend = monthlyPayment-morgageAmount*monthRate;
+    if (dividend == 0) return;
+
+    if ((dividend != 0 ) && (log_base((1+monthRate),(monthlyPayment/(dividend)),numPeriod)))
+    {
+        ui->durationEdt->setText(QString::number(numPeriod/12,'f',2));
+    }
+    else
+        ui->durationEdt->setText("Insufficient payment");
 
     /*
     if (ui->weeklyRadio->isChecked())
@@ -142,12 +176,31 @@ void MorgageCalculator::processPayment()
     ui->paymentEdt->setText(QString::number(payment,'f',2));
 }
 
+///////////////////////////////////////////////////////////////////////////////
+///
+//////////////////////////////////////////////////////////////////////////////
 void MorgageCalculator::processRate()
 {
 
 }
 
+///////////////////////////////////////////////////////////////////////////////
+///
+//////////////////////////////////////////////////////////////////////////////
 void MorgageCalculator::processMorgage()
 {
 
+}
+
+///////////////////////////////////////////////////////////////////////////////
+///
+//////////////////////////////////////////////////////////////////////////////
+bool MorgageCalculator::log_base(double base, double x, double &res)
+{
+    if (x == 1) return false;
+    if (x == 0) return false;
+    if (x < 0) return false;
+
+    res = log(x)/log(base);
+    return true;
 }
