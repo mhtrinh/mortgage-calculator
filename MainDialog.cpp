@@ -9,7 +9,7 @@ MainDialog::MainDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setLayout(ui->mainLayout);
-    ui->tabWidget->addTab(new MorgageCalculator(), "Morgage calculator");
+
 }
 
 MainDialog::~MainDialog()

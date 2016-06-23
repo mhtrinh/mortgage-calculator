@@ -12,8 +12,9 @@ MorgageCalculator::MorgageCalculator(QWidget *parent) :
     ui(new Ui::MorgageCalculator)
 {
     ui->setupUi(this);    
+
     //this->setLayout(ui->horizontalLayout);
-    //this->setLayout(
+    this->setLayout(ui->mainLayout);
 
     changing =false;
 
