@@ -24,6 +24,7 @@ private slots:
     void on_afterEdt_textChanged(const QString &arg1);
 
 private:
+    void updateBank();
     void updateFuture();
     QString printThousand(double val);
 
@@ -36,7 +37,7 @@ private:
     double annualRate;
     double monthlyRate;
     double monthlyPayment;
-    double duration;
+    double numPayment;
 
 
     void processDuration();

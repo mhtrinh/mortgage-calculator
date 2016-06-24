@@ -135,12 +135,14 @@ void MorgageCalculator::processDuration()
 
     if ((dividend != 0 ) && (log_base((1+monthlyRate),(monthlyPayment/(dividend)),numPeriod)))
     {
+        numPayment = numPeriod;
         ui->durationEdt->setText(QString::number(numPeriod/12,'f',2));
     }
     else
         ui->durationEdt->setText("Insufficient payment");
 
     updateFuture();
+    updateBank();
     /*
     if (ui->weeklyRadio->isChecked())
         monthlyPayment
@@ -153,15 +155,15 @@ void MorgageCalculator::processDuration()
 //////////////////////////////////////////////////////////////////////////////
 void MorgageCalculator::processPayment()
 {
-    //double numYear;
+    double numYear;
     if (!validate(ui->amountEdt->text(),morgageAmount)) return;
     else if (!validate(ui->rateEdt->text(),annualRate)) return;
-    else if (!validate(ui->durationEdt->text(),duration)) return;
+    else if (!validate(ui->durationEdt->text(),numYear)) return;
 
     morgageAmount *= 1000;
     double payment;
     monthlyRate = annualRate/1200;
-    double numPayment = duration*12;
+    numPayment = numYear*12;
     monthlyPayment = morgageAmount*(monthlyRate*pow((1+monthlyRate),numPayment))/(pow(1+monthlyRate,numPayment)-1);
 
     if (ui->weeklyRadio->isChecked())
@@ -178,6 +180,7 @@ void MorgageCalculator::processPayment()
     ui->paymentEdt->setText(QString::number(payment,'f',2));
 
     updateFuture();
+    updateBank();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -217,6 +220,18 @@ void MorgageCalculator::on_afterEdt_textChanged(const QString &arg1)
     Q_UNUSED(arg1);
 
     updateFuture();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+///
+//////////////////////////////////////////////////////////////////////////////
+void MorgageCalculator::updateBank()
+{
+    double totalPaid = numPayment*monthlyPayment;
+    ui->totalPaid->setText(printThousand(totalPaid));
+
+    double interest = totalPaid - morgageAmount;
+    ui->bankInterestLb->setText(printThousand(interest));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
