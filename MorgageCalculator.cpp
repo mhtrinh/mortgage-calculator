@@ -196,7 +196,33 @@ void MorgageCalculator::processRate()
 //////////////////////////////////////////////////////////////////////////////
 void MorgageCalculator::processMorgage()
 {
+    double numYear;
+    double payment;
+    if (!validate(ui->paymentEdt->text(),payment)) return;
+    else if (!validate(ui->rateEdt->text(),annualRate)) return;
+    else if (!validate(ui->durationEdt->text(),numYear)) return;
 
+
+    monthlyRate = annualRate/1200;
+    numPayment = numYear*12;
+    if (ui->weeklyRadio->isChecked())
+    {
+        monthlyPayment = payment*52/12;
+    }
+    else if (ui->biweeklyRadio->isChecked())
+    {
+        monthlyPayment = payment*26/12;
+    }
+    else
+        monthlyPayment = payment;
+
+    //double amount;
+    morgageAmount = monthlyPayment*(pow(1+monthlyRate,numPayment)-1)/(monthlyRate*pow(1+monthlyRate,numPayment));
+
+    ui->amountEdt->setText(QString::number(morgageAmount/1000,'f',3));
+
+    updateBank();
+    updateFuture();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

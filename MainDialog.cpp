@@ -9,6 +9,7 @@ MainDialog::MainDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setLayout(ui->mainLayout);
+    this->setWindowTitle("Morgage calculator");
 
 }
 

@@ -116,7 +116,7 @@
         <item row="0" column="2">
          <widget class="QRadioButton" name="morgageRadio">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="toolTip">
            <string>Select this field to make it to be calculated</string>
