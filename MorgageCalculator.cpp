@@ -129,17 +129,18 @@ void MorgageCalculator::processDuration()
         monthlyPayment = payment;
 
     double numPeriod;
-    double monthRate = annualRate/1200;
-    double dividend = monthlyPayment-morgageAmount*monthRate;
+    monthlyRate = annualRate/1200;
+    double dividend = monthlyPayment-morgageAmount*monthlyRate;
     if (dividend == 0) return;
 
-    if ((dividend != 0 ) && (log_base((1+monthRate),(monthlyPayment/(dividend)),numPeriod)))
+    if ((dividend != 0 ) && (log_base((1+monthlyRate),(monthlyPayment/(dividend)),numPeriod)))
     {
         ui->durationEdt->setText(QString::number(numPeriod/12,'f',2));
     }
     else
         ui->durationEdt->setText("Insufficient payment");
 
+    updateFuture();
     /*
     if (ui->weeklyRadio->isChecked())
         monthlyPayment
@@ -159,9 +160,9 @@ void MorgageCalculator::processPayment()
 
     morgageAmount *= 1000;
     double payment;
-    double monthRate = annualRate/1200;
+    monthlyRate = annualRate/1200;
     double numPayment = duration*12;
-    monthlyPayment = morgageAmount*(monthRate*pow((1+monthRate),numPayment))/(pow(1+monthRate,numPayment)-1);
+    monthlyPayment = morgageAmount*(monthlyRate*pow((1+monthlyRate),numPayment))/(pow(1+monthlyRate,numPayment)-1);
 
     if (ui->weeklyRadio->isChecked())
     {
@@ -175,6 +176,8 @@ void MorgageCalculator::processPayment()
         payment = monthlyPayment;
 
     ui->paymentEdt->setText(QString::number(payment,'f',2));
+
+    updateFuture();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -204,4 +207,62 @@ bool MorgageCalculator::log_base(double base, double x, double &res)
 
     res = log(x)/log(base);
     return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+///
+//////////////////////////////////////////////////////////////////////////////
+void MorgageCalculator::on_afterEdt_textChanged(const QString &arg1)
+{
+    Q_UNUSED(arg1);
+
+    updateFuture();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+///
+//////////////////////////////////////////////////////////////////////////////
+void MorgageCalculator::updateFuture()
+{
+    if (!dataValid)
+    {
+        return;
+    }
+    bool ok;
+    double period;
+    period = ui->afterEdt->text().toDouble(&ok);
+    if (! ok) return;
+
+    period *=12;
+
+    double principalPaid;
+    //double monthlyRate = annualRate/1200;
+    principalPaid = (monthlyPayment/monthlyRate - morgageAmount)*(pow(1+monthlyRate,period)-1);
+
+    ui->paidLbl->setText(printThousand(principalPaid));
+
+    double left;
+    left = morgageAmount-principalPaid;
+    ui->principalLeftLbl->setText(printThousand(left));
+
+    double paid = period*monthlyPayment;
+    ui->futurPaidLbl->setText(printThousand(paid));
+
+
+}
+
+///////////////////////////////////////////////////////////////////////////////
+///
+//////////////////////////////////////////////////////////////////////////////
+QString MorgageCalculator::printThousand(double val)
+{
+    QString word = QString::number(val,'f',0);
+    int w_size = word.size();
+    if (w_size > 3) {
+        word.insert(word.size() - 3, " ");
+    }
+    if (w_size > 6) {
+        word.insert(word.size() - 7, " ");
+    }
+    return word;
 }

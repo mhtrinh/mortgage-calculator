@@ -21,12 +21,20 @@ private slots:
     void onTargetChanged();
     void updateResults();
 
+    void on_afterEdt_textChanged(const QString &arg1);
+
 private:
+    void updateFuture();
+    QString printThousand(double val);
+
+    void updateCost();
+
     bool validate(const QString &text1, double &val1);
 
     bool dataValid;
     double morgageAmount;
     double annualRate;
+    double monthlyRate;
     double monthlyPayment;
     double duration;
 
