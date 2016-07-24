@@ -1,7 +1,10 @@
 #ifndef MAINDIALOG_H
 #define MAINDIALOG_H
 
+#define VERSION "1.0.0"
+
 #include <QDialog>
+#include "Planner.h"
 
 namespace Ui {
 class MainDialog;
@@ -18,8 +21,11 @@ public:
 private slots:
     void on_pushButton_clicked();
 
+    void on_pushButton_2_clicked();
+
 private:
     Ui::MainDialog *ui;
+    QVector<Planner*> planners;
 };
 
 #endif // MAINDIALOG_H
