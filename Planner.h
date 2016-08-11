@@ -21,9 +21,11 @@ public:
 private slots:
     void on_pushButton_clicked();
 
+    void slotNewData();
 
 private:
     void addPiece();
+    void clearFuture();
     Ui::Planner *ui;
     QHBoxLayout *plannerLayout;
     QVector<MortgagePiece*> pieces;

@@ -17,14 +17,19 @@ public:
 
     void setName(QString name);
 
+    bool getFutureStateAfter(double numMonth, double &principalPaid, double &principalLeft, double &futurPaid);
+
+signals:
+    void sigNewData();
+
 private slots:
     void updateSummary();
 
 private:
-
     void clearSummary();
 
     Ui::MortgagePiece *ui;
+    bool dataValid;
 };
 
 #endif // MORTGAGEPIECE_H

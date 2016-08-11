@@ -1,6 +1,46 @@
 #include "libs.h"
 #include <math.h>
 
+
+///////////////////////////////////////////////////////////////////////////////
+///
+//////////////////////////////////////////////////////////////////////////////
+bool getFuture(double mortgageAmount, double monthlyRate, double monthlyPayment, double numMonth, double &paid, double &left, double &futur)
+{
+    double numMonthRequired,interest;
+    if (getSummary(mortgageAmount,monthlyRate,monthlyPayment,numMonthRequired,paid,interest))
+    {
+        if (numMonthRequired < numMonth)
+        {
+            futur = paid;
+            left = 0;
+            paid = mortgageAmount;
+        }
+        else
+        {
+            paid = (monthlyPayment/monthlyRate - mortgageAmount)*(pow(1+monthlyRate,numMonth)-1);
+            left = mortgageAmount-paid;
+            futur = numMonth*monthlyPayment;
+        }
+        return true;
+    }
+    return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+///
+//////////////////////////////////////////////////////////////////////////////
+bool getSummary(double mortgageAmount, double monthlyRate, double monthlyPayment, double &numMonth, double &totalPaid, double &bankInterest)
+{
+    double dividend = monthlyPayment-mortgageAmount*monthlyRate;
+    if ((dividend !=0) && log_base((1+monthlyRate),(monthlyPayment/(dividend)),numMonth))
+    {
+        getBankInterest(numMonth,monthlyPayment,mortgageAmount,totalPaid,bankInterest);
+        return true;
+    }
+    return false;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 ///
 //////////////////////////////////////////////////////////////////////////////

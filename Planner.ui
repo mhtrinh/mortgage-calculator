@@ -109,7 +109,7 @@
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QLabel" name="label_4">
+        <widget class="QLabel" name="futurLbl">
          <property name="text">
           <string>TextLabel</string>
          </property>
@@ -126,7 +126,7 @@
         </widget>
        </item>
        <item row="3" column="1">
-        <widget class="QLabel" name="label_6">
+        <widget class="QLabel" name="paidLbl">
          <property name="text">
           <string>TextLabel</string>
          </property>
@@ -176,7 +176,7 @@
         </widget>
        </item>
        <item row="4" column="1">
-        <widget class="QLabel" name="label_8">
+        <widget class="QLabel" name="leftLbl">
          <property name="text">
           <string>TextLabel</string>
          </property>

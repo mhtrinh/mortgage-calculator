@@ -7,6 +7,7 @@ MortgagePiece::MortgagePiece(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MortgagePiece)
 {
+    dataValid = false;
     ui->setupUi(this);
     this->setLayout(ui->mainLayout);
     connect(ui->amountEdt,&QLineEdit::textChanged,this,&MortgagePiece::updateSummary);
@@ -25,6 +26,22 @@ void MortgagePiece::setName(QString name)
     ui->groupBox->setTitle(name);
 }
 
+bool MortgagePiece::getFutureStateAfter(double numMonth, double &principalPaid, double &principalLeft, double &futurPaid)
+{
+    double mortgageAmount,annualRate,monthlyPayment,weeklyPayment;
+    if (validate(ui->amountEdt->text(),mortgageAmount)
+            && validate(ui->rateEdt->text(),annualRate)
+            && validate(ui->paymentEdt->text(),weeklyPayment))
+    {
+        mortgageAmount *= 1000;
+        monthlyPayment = weeklyPayment*52/12;
+        double monthlyRate = annualRate/1200;
+
+        return getFuture(mortgageAmount,monthlyRate,monthlyPayment,numMonth,principalPaid,principalLeft,futurPaid);
+    }
+    return false;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 ///
 //////////////////////////////////////////////////////////////////////////////
@@ -38,18 +55,15 @@ void MortgagePiece::updateSummary()
 
         mortgageAmount *= 1000;
         monthlyPayment = weeklyPayment*52/12;
-        double numPayment;
+
         double monthlyRate = annualRate/1200;
-        double dividend = monthlyPayment-mortgageAmount*monthlyRate;
-
-        if ((dividend !=0) && log_base((1+monthlyRate),(monthlyPayment/(dividend)),numPayment))
+        double numPayment,bankInterest,totalPaid;
+        if (getSummary(mortgageAmount,monthlyRate,monthlyPayment,numPayment,totalPaid,bankInterest))
         {
-            double bankInterest,totalPaid;
-            getBankInterest(numPayment,monthlyPayment,mortgageAmount,totalPaid,bankInterest);
-
             ui->durationLbl->setText(QString::number(numPayment/12,'f',2));
             ui->bankLbl->setText(printThousand(bankInterest));
             ui->totPaymentLbl->setText(printThousand(totalPaid));
+            emit sigNewData();
             return;
         }
     }
