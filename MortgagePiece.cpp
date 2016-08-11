@@ -3,11 +3,11 @@
 
 #include "libs.h"
 
-MortgagePiece::MortgagePiece(QWidget *parent) :
+MortgagePiece::MortgagePiece(int id, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MortgagePiece)
 {
-    dataValid = false;
+    this->id = id;
     ui->setupUi(this);
     this->setLayout(ui->mainLayout);
     connect(ui->amountEdt,&QLineEdit::textChanged,this,&MortgagePiece::updateSummary);
@@ -79,4 +79,12 @@ void MortgagePiece::clearSummary()
     ui->totPaymentLbl->clear();
     ui->bankLbl->clear();
     ui->durationLbl->clear();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+///
+//////////////////////////////////////////////////////////////////////////////
+void MortgagePiece::on_pushButton_clicked()
+{
+    emit sigDeleteMe(this->id);
 }

@@ -22,6 +22,7 @@ private slots:
     void on_pushButton_clicked();
 
     void slotNewData();
+    void slotDeletePiece(int id);
 
 private:
     void addPiece();

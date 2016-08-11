@@ -14,7 +14,7 @@ Planner::Planner(QWidget *parent) :
     ui->groupBox->setLayout(plannerLayout);
     //ui->gridLayout->setColumnStretch(99,100);
     connect(ui->afterYearEdt,&QLineEdit::textChanged,this,&Planner::slotNewData);
-
+    clearFuture();
     addPiece();
 }
 
@@ -62,13 +62,24 @@ void Planner::slotNewData()
 
 }
 
+void Planner::slotDeletePiece(int id)
+{
+    if ((id >=0) && (id <pieces.size()))
+    {
+        delete pieces[id];
+        pieces.removeAt(id);
+        slotNewData();
+    }
+}
+
 void Planner::addPiece()
 {
-    MortgagePiece *piece = new MortgagePiece();
+    MortgagePiece *piece = new MortgagePiece(pieces.size());
     plannerLayout->addWidget(piece);
     pieces.push_back(piece);
     piece->setName(QString("Part %1 :").arg(pieces.size()));
     connect(piece,&MortgagePiece::sigNewData,this,&Planner::slotNewData);
+    connect(piece,&MortgagePiece::sigDeleteMe,this,&Planner::slotDeletePiece);
 }
 
 void Planner::clearFuture()

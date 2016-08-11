@@ -12,7 +12,7 @@ class MortgagePiece : public QWidget
     Q_OBJECT
 
 public:
-    explicit MortgagePiece(QWidget *parent = 0);
+    explicit MortgagePiece(int id, QWidget *parent = 0);
     ~MortgagePiece();
 
     void setName(QString name);
@@ -21,15 +21,19 @@ public:
 
 signals:
     void sigNewData();
+    void sigDeleteMe(int id);
 
 private slots:
     void updateSummary();
+
+    void on_pushButton_clicked();
 
 private:
     void clearSummary();
 
     Ui::MortgagePiece *ui;
-    bool dataValid;
+
+    int id;
 };
 
 #endif // MORTGAGEPIECE_H
