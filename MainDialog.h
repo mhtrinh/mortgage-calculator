@@ -5,6 +5,7 @@
 
 #include <QDialog>
 #include "Planner.h"
+#include "CompoundInterest.h"
 
 namespace Ui {
 class MainDialog;
@@ -23,9 +24,15 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+    void on_pushButton_3_clicked();
+
+
 private:
+    void closeAll();
+    void closeEvent(QCloseEvent *ev);
     Ui::MainDialog *ui;
     QVector<Planner*> planners;
+    QVector<CompoundInterest*> savings;
 };
 
 #endif // MAINDIALOG_H

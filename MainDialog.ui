@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>453</width>
+    <width>302</width>
     <height>530</height>
    </rect>
   </property>
@@ -18,8 +18,8 @@
     <rect>
      <x>20</x>
      <y>60</y>
-     <width>391</width>
-     <height>171</height>
+     <width>131</width>
+     <height>141</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="mainLayout">
@@ -67,6 +67,13 @@
        <widget class="QPushButton" name="pushButton_2">
         <property name="text">
          <string>Planner</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_3">
+        <property name="text">
+         <string>Saving</string>
         </property>
        </widget>
       </item>

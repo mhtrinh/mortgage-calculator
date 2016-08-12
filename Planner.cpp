@@ -9,6 +9,7 @@ Planner::Planner(QWidget *parent) :
     ui(new Ui::Planner)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Mortgage planner");
     this->setLayout(ui->mainLayout);
     plannerLayout = new QHBoxLayout();
     ui->groupBox->setLayout(plannerLayout);

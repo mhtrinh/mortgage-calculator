@@ -17,15 +17,18 @@ SOURCES += main.cpp\
     MainDialog.cpp \
     Planner.cpp \
     MortgagePiece.cpp \
-    libs.cpp
+    libs.cpp \
+    CompoundInterest.cpp
 
 HEADERS  += MorgageCalculator.h \
     MainDialog.h \
     Planner.h \
     MortgagePiece.h \
-    libs.h
+    libs.h \
+    CompoundInterest.h
 
 FORMS    += MorgageCalculator.ui \
     MainDialog.ui \
     Planner.ui \
-    MortgagePiece.ui
+    MortgagePiece.ui \
+    CompoundInterest.ui
